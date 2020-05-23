@@ -2,33 +2,33 @@ import groupBy from "lodash.groupby";
 
 const vars = [
   {
-    id: 1,
+    id: 0,
     coruption: 10,
     bonus: 6,
     price: 3000,
   },
   {
-    id: 2,
+    id: 1,
     coruption: 15,
     bonus: 9,
     price: 4125,
   },
   {
-    id: 3,
+    id: 2,
     coruption: 20,
     bonus: 12,
     price: 5000,
   },
 ];
 
-let temp = "0";
-let count = 0;
-let combinations = [];
-
-let cache = {};
 const totalData = [];
 
-while (temp !== "222222222") {
+let cache = {};
+
+let current = "";
+let count = 0;
+
+while (current !== "222222222") {
   let data = {
     items: { 0: 0, 1: 0, 2: 0 },
     coruption: 0,
@@ -36,13 +36,12 @@ while (temp !== "222222222") {
     price: 0,
   };
 
-  temp = count.toString(3);
-  combinations.push(temp);
+  current = count.toString(3);
   count++;
 
-  const temp2 = temp.split("");
+  const parts = current.split("");
 
-  for (const item of temp2) {
+  for (const item of parts) {
     let tg = vars[item];
 
     data.items[item]++;
