@@ -17,7 +17,7 @@
     "stylelint-config-recommended": "^3.0.0"
   },
   "browserslist": [
-    "defaults"
+    "last 1 Chrome versions"
   ],
   "scripts": {
     "build": "parcel build src/index.html",

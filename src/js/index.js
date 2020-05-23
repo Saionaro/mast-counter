@@ -19,40 +19,46 @@ const vars = [
   },
 ];
 
-const getRandom = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+let temp = "0";
+let count = 0;
+let combinations = [];
 
-const calcTop5 = (resist, maxCor) => {
-  const count = 9;
-  const res = [];
+const totalData = [];
 
-  for (let randy = 0; randy < 1000; randy++) {
-    for (let i = 1; i <= count; i++) {
-      let data = {
-        items: { 1: 0, 2: 0, 3: 0 },
-        coruption: -resist,
-        bonus: 0,
-      };
+while (temp !== "222222222") {
+  let data = {
+    items: { 0: 0, 1: 0, 2: 0 },
+    coruption: 0,
+    bonus: 0,
+  };
 
-      for (let j = 0; j < i; j++) {
-        const tg = vars[getRandom(0, 3)];
+  temp = count.toString(3);
+  combinations.push(temp);
+  count++;
 
-        data.items[tg.id]++;
-        data.coruption += tg.coruption;
-        data.bonus += tg.bonus;
-      }
+  const temp2 = temp.split("");
 
-      if (data.coruption > 40 && data.coruption < maxCor) {
-        res.push(data);
-      }
-    }
+  for (const item of temp2) {
+    let tg = vars[item];
+
+    data.items[item]++;
+    data.coruption += tg.coruption;
+    data.bonus += tg.bonus;
   }
 
-  const results = res.sort((i1, i2) => i2.bonus - i1.bonus).slice(0, 5);
+  totalData.push(data);
+}
 
-  return results
+const calcTop5 = (resist, maxCor) => {
+  return totalData
+    .filter((item) => item.coruption - resist <= maxCor)
+    .sort((i1, i2) => i2.bonus - i1.bonus)
+    .slice(0, 5)
     .map(
       (item) =>
-        `${item.items[1]}T1, ${item.items[2]}T2, ${item.items[3]}T3 => ${item.coruption}cor ${item.bonus}%`
+        `${item.items[0]}T1, ${item.items[1]}T2, ${item.items[2]}T3 => ${
+          item.coruption - resist
+        }cor ${item.bonus}%`
     )
     .join("\n");
 };
