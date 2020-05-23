@@ -16,6 +16,11 @@ body {
   background-color: #f3f4f4;
   border-radius: 3px;
   white-space: pre-wrap;
+  border: 1px solid #b1b1b1;
+}
+
+.output span:first-of-type {
+  color: green;
 }
 
 .params {
@@ -28,10 +33,46 @@ body {
   margin-top: 2vh;
 }
 
+.param__input {
+  padding: 8px;
+  border-radius: 3px;
+  border: 1px solid #b1b1b1;
+}
+
 @media (max-width: 600px) {
   .content {
     margin-top: 10vh;
     flex-direction: column;
     min-height: auto;
+  }
+
+  .params {
+    margin-top: 5vh;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1b1b1b;
+  }
+
+  .output {
+    color: #e6e6e6;
+    background-color: #252525;
+    border: 1px solid black;
+  }
+
+  .output span:first-of-type {
+    color: greenyellow;
+  }
+
+  .params {
+    color: #e6e6e6;
+  }
+
+  .param__input {
+    color: #e6e6e6;
+    background-color: #252525;
+    border: 1px solid black;
   }
 }

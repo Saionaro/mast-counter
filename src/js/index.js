@@ -1,9 +1,11 @@
+import groupBy from "lodash.groupby";
+
 const vars = [
   {
     id: 1,
     coruption: 10,
     bonus: 6,
-    price: 0,
+    price: 3000,
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ let temp = "0";
 let count = 0;
 let combinations = [];
 
+let cache = {};
 const totalData = [];
 
 while (temp !== "222222222") {
@@ -30,6 +33,7 @@ while (temp !== "222222222") {
     items: { 0: 0, 1: 0, 2: 0 },
     coruption: 0,
     bonus: 0,
+    price: 0,
   };
 
   temp = count.toString(3);
@@ -44,23 +48,45 @@ while (temp !== "222222222") {
     data.items[item]++;
     data.coruption += tg.coruption;
     data.bonus += tg.bonus;
+    data.price += tg.price;
   }
 
-  totalData.push(data);
+  let tag = `${data.items[0]}-${data.items[1]}-${data.items[2]}`;
+
+  if (!cache[tag]) {
+    cache[tag] = true;
+    totalData.push(data);
+  }
 }
 
+cache = {};
+
 const calcTop5 = (resist, maxCor) => {
-  return totalData
+  const top5 = totalData
     .filter((item) => item.coruption - resist <= maxCor)
     .sort((i1, i2) => i2.bonus - i1.bonus)
-    .slice(0, 5)
+    .slice(0, 5);
+
+  const groups = groupBy(top5, "bonus");
+  const keys = Object.keys(groups).sort(
+    (k1, k2) => parseInt(k2, 10) - parseInt(k1, 10)
+  );
+
+  const sortedTop5 = [];
+
+  for (const key of keys) {
+    let sortedGroup = groups[key].sort((i1, i2) => i1.price - i2.price);
+    sortedTop5.push(...sortedGroup);
+  }
+
+  return sortedTop5
     .map(
       (item) =>
-        `${item.items[0]}T1, ${item.items[1]}T2, ${item.items[2]}T3 => ${
-          item.coruption - resist
-        }cor ${item.bonus}%`
+        `<span>${item.items[0]}T1, ${item.items[1]}T2, ${item.items[2]}T3 (${
+          item.price
+        } echos) => ${item.coruption - resist}cor ${item.bonus}%</span>`
     )
-    .join("\n");
+    .join("\n\n");
 };
 
 document.addEventListener("DOMContentLoaded", () => {

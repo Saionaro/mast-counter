@@ -23,5 +23,8 @@
     "build": "parcel build src/index.html",
     "dev": "parcel src/index.html --port 7823",
     "lint": "eslint src/**/*.js --no-error-on-unmatched-pattern"
+  },
+  "dependencies": {
+    "lodash.groupby": "^4.6.0"
   }
 }
